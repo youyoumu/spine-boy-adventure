@@ -2,6 +2,7 @@ import '@pixi/spine-pixi'
 
 import { Application, Assets } from 'pixi.js'
 import { SpineBoy } from './SpineBoy'
+import { Controller } from './Controller'
 
 // Asynchronous IIFE
 ;(async () => {
@@ -45,6 +46,8 @@ import { SpineBoy } from './SpineBoy'
   // Create our character
   const spineBoy = new SpineBoy()
 
+  const controller = new Controller()
+
   // Adjust character transformation.
   spineBoy.view.x = app.screen.width / 2
   spineBoy.view.y = app.screen.height - 80
@@ -52,4 +55,22 @@ import { SpineBoy } from './SpineBoy'
 
   // Add character to the stage.
   app.stage.addChild(spineBoy.view)
+
+  let currentAnimation
+
+  // Animate the character - just testing the controller at this point
+  app.ticker.add((time) => {
+    const rightPressed = controller.keys.right.pressed
+    const animationName = rightPressed ? 'walk' : 'idle'
+    const loop = true
+
+    // Apply the animation if it's different from the active one.
+    if (currentAnimation !== animationName) {
+      // Store the current animation name.
+      currentAnimation = animationName
+
+      // Animate the character spine based on the right key state,
+      spineBoy.spine.state.setAnimation(0, animationName, loop)
+    }
+  })
 })()
