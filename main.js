@@ -1,6 +1,7 @@
 import '@pixi/spine-pixi'
 
 import { Application, Assets } from 'pixi.js'
+import { SpineBoy } from './SpineBoy'
 
 // Asynchronous IIFE
 ;(async () => {
@@ -40,4 +41,15 @@ import { Application, Assets } from 'pixi.js'
       src: 'https://pixijs.com/assets/tutorials/spineboy-adventure/platform.png'
     }
   ])
+
+  // Create our character
+  const spineBoy = new SpineBoy()
+
+  // Adjust character transformation.
+  spineBoy.view.x = app.screen.width / 2
+  spineBoy.view.y = app.screen.height - 80
+  spineBoy.spine.scale.set(0.5)
+
+  // Add character to the stage.
+  app.stage.addChild(spineBoy.view)
 })()
