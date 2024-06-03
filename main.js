@@ -3,6 +3,7 @@ import '@pixi/spine-pixi'
 import { Application, Assets } from 'pixi.js'
 import { SpineBoy } from './SpineBoy'
 import { Controller } from './Controller'
+import { Scene } from './Scene'
 
 // Asynchronous IIFE
 ;(async () => {
@@ -46,16 +47,20 @@ import { Controller } from './Controller'
   // Create a controller that handles keyboard inputs.
   const controller = new Controller()
 
+  // Create a scene that holds the environment.
+  const scene = new Scene(app.screen.width, app.screen.height)
+
   // Create our character
   const spineBoy = new SpineBoy()
 
   // Adjust views' transformation.
+  scene.view.y = app.screen.height
   spineBoy.view.x = app.screen.width / 2
-  spineBoy.view.y = app.screen.height - 80
-  spineBoy.spine.scale.set(0.5)
+  spineBoy.view.y = app.screen.height - scene.floorHeight
+  spineBoy.spine.scale.set(scene.scale * 0.32)
 
-  // Add character to the stage.
-  app.stage.addChild(spineBoy.view)
+  // Add scene and character to the stage.
+  app.stage.addChild(scene.view, spineBoy.view)
 
   // Trigger character's spawn animation.
   spineBoy.spawn()
